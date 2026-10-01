@@ -38,7 +38,7 @@ pipeline {
                         -d chat_id="${CHAT_ID}" \
                         --data-urlencode "text=DEPLOY STARTED
 Project: ${PROJECT_NAME}
-Branch: main"
+Branch: main" || true
                     '''
                 }
 
@@ -68,7 +68,7 @@ Branch: main"
                     --data-urlencode "text=DEPLOY SUCCESS
 Project: ${PROJECT_NAME}
 Branch: main
-URL: ${DEPLOY_URL}"
+URL: ${DEPLOY_URL}" || true
                 '''
             }
         }
@@ -85,7 +85,7 @@ URL: ${DEPLOY_URL}"
                     --data-urlencode "text=DEPLOY FAILED
 Project: ${PROJECT_NAME}
 Branch: main
-Please check Jenkins."
+Please check Jenkins." || true
                 '''
             }
         }
