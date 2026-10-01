@@ -7,7 +7,6 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout Source') {
             steps {
                 git branch: 'main',
@@ -29,29 +28,21 @@ pipeline {
 
         stage('Deploy') {
             steps {
-
-                // Telegram: Deploy Started
+                // Thông báo bắt đầu deploy
                 withCredentials([
-                    string(
-                        credentialsId: 'telegram-bot-token',
-                        variable: 'BOT_TOKEN'
-                    ),
-                    string(
-                        credentialsId: 'telegram-chat-id',
-                        variable: 'CHAT_ID'
-                    )
+                    string(credentialsId: 'telegram-bot-token', variable: 'BOT_TOKEN'),
+                    string(credentialsId: 'telegram-chat-id', variable: 'CHAT_ID')
                 ]) {
                     sh '''
                         curl -s -X POST \
-                          "https://api.telegram.org/bot${8823348287:AAFR-ejt22LfZEmzKE6NhcP85APq4e6hCbg}/sendMessage" \
-                          -d chat_id="${7133160006}" \
-                          --data-urlencode "text=DEPLOY STARTED
-Project: ${PROJECT_NAME}
-Branch: main" || true
+                        "https://api.telegram.org/bot$8823348287:AAFR-ejt22LfZEmzKE6NhcP85APq4e6hCbg/sendMessage" \
+                        -d "chat_id=$7133160006" \
+                        --data-urlencode "text=DEPLOY STARTED - Project: devops-test-khanh - Branch: main" \
+                        || true
                     '''
                 }
 
-                // Build Docker + Deploy
+                // Deploy Docker
                 sh '''
                     echo "===== BUILD DOCKER IMAGE ====="
 
@@ -61,7 +52,7 @@ Branch: main" || true
 
                     docker rm -f devops-test-khanh || true
 
-                    echo "===== DEPLOY ====="
+                    echo "===== START NEW CONTAINER ====="
 
                     docker run -d \
                       --name devops-test-khanh \
@@ -73,56 +64,36 @@ Branch: main" || true
     }
 
     post {
-
         success {
-
             echo 'DEPLOY SUCCESS'
 
             withCredentials([
-                string(
-                    credentialsId: 'telegram-bot-token',
-                    variable: 'BOT_TOKEN'
-                ),
-                string(
-                    credentialsId: 'telegram-chat-id',
-                    variable: 'CHAT_ID'
-                )
+                string(credentialsId: 'telegram-bot-token', variable: 'BOT_TOKEN'),
+                string(credentialsId: 'telegram-chat-id', variable: 'CHAT_ID')
             ]) {
                 sh '''
                     curl -s -X POST \
-                      "https://api.telegram.org/bot${8823348287:AAFR-ejt22LfZEmzKE6NhcP85APq4e6hCbg}/sendMessage" \
-                      -d chat_id="${7133160006}" \
-                      --data-urlencode "tex
-                      t=DEPLOY SUCCESS
-Project: ${PROJECT_NAME}
-Branch: main
-URL: ${DEPLOY_URL}" || true
+                    "https://api.telegram.org/bot$8823348287:AAFR-ejt22LfZEmzKE6NhcP85APq4e6hCbg/sendMessage" \
+                    -d "chat_id=$7133160006" \
+                    --data-urlencode "text=DEPLOY SUCCESS - Project: devops-test-khanh - Branch: main - URL: http://localhost:3001" \
+                    || true
                 '''
             }
         }
 
         failure {
-
             echo 'DEPLOY FAILED'
 
             withCredentials([
-                string(
-                    credentialsId: 'telegram-bot-token',
-                    variable: 'BOT_TOKEN'
-                ),
-                string(
-                    credentialsId: 'telegram-chat-id',
-                    variable: 'CHAT_ID'
-                )
+                string(credentialsId: 'telegram-bot-token', variable: 'BOT_TOKEN'),
+                string(credentialsId: 'telegram-chat-id', variable: 'CHAT_ID')
             ]) {
                 sh '''
                     curl -s -X POST \
-                      "https://api.telegram.org/bot${8823348287:AAFR-ejt22LfZEmzKE6NhcP85APq4e6hCbg}/sendMessage" \
-                      -d chat_id="${7133160006}" \
-                      --data-urlencode "text=DEPLOY FAILED
-Project: ${PROJECT_NAME}
-Branch: main
-Please check Jenkins." || true
+                    "https://api.telegram.org/bot$8823348287:AAFR-ejt22LfZEmzKE6NhcP85APq4e6hCbg/sendMessage" \
+                    -d "chat_id=$7133160006" \
+                    --data-urlencode "text=DEPLOY FAILED - Project: devops-test-khanh - Branch: main - Please check Jenkins." \
+                    || true
                 '''
             }
         }
