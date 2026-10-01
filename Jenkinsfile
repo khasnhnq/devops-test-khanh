@@ -44,7 +44,7 @@ pipeline {
                         curl -s -X POST \
                         "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
                         -d chat_id="${CHAT_ID}" \
-                        --data-urlencode "text=🚀 DEPLOY STARTED
+                        --data-urlencode "text= DEPLOY STARTED
 Project: ${PROJECT_NAME}
 Branch: main"
                     '''
@@ -81,7 +81,7 @@ Branch: main"
                     curl -s -X POST \
                     "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
                     -d chat_id="${CHAT_ID}" \
-                    --data-urlencode "text=✅ DEPLOY SUCCESS
+                    --data-urlencode "text= DEPLOY SUCCESS
 Project: ${PROJECT_NAME}
 Branch: main
 URL: ${DEPLOY_URL}"
@@ -104,7 +104,7 @@ URL: ${DEPLOY_URL}"
                     curl -s -X POST \
                     "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
                     -d chat_id="${CHAT_ID}" \
-                    --data-urlencode "text=❌ DEPLOY FAILED
+                    --data-urlencode "text= DEPLOY FAILED
 Project: ${PROJECT_NAME}
 Branch: main
 Please check Jenkins."
